@@ -1,4 +1,4 @@
-from .javascript import show, load_datatables
+from .datatables import show, load_datatables
 from .version import __version__
 
 load_datatables()

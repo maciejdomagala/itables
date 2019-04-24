@@ -1,4 +1,4 @@
-"""HTML/js representation of Pandas dataframes"""
+"""HTML/js representation of Pandas dataframes, using datatables.net"""
 
 import os
 import re
