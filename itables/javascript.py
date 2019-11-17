@@ -1,5 +1,6 @@
 """HTML/js representation of Pandas dataframes"""
 
+import os
 import re
 import uuid
 import json
@@ -10,33 +11,55 @@ import pandas.io.formats.format as fmt
 from IPython.core.display import display, Javascript, HTML
 import itables.options as opt
 
+_DATATABLES_LOADED_ = False
+
 try:
     unicode  # Python 2
 except NameError:
     unicode = str  # Python 3
 
 
-def load_datatables():
+def read_package_file(*path):
+    current_path = os.path.dirname(__file__)
+    with open(os.path.join(current_path, *path), encoding='utf-8') as fp:
+        return fp.read()
+
+
+def load_datatables(connected=False):
     """Load the datatables.net library, and the corresponding css"""
-    display(Javascript("""require.config({
-    paths: {
-        datatables: 'https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min',
-    }
-});
+    global _DATATABLES_LOADED_
 
-$('head').append('<link rel="stylesheet" type="text/css" \
-                href = "https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" > ');
+    if connected:
+        load_datatables_js = read_package_file('javascript', 'load_datatables_connected.js')
+    else:
+        warnings.warn('WIP - offline mode is not working yet - please import itables.connected')
+        datatables_min_js = read_package_file('datatables', 'jquery.dataTables.min.js')
+        datatables_min_css = read_package_file('datatables', 'jquery.dataTables.min.css')
 
-$('head').append('<style> table td { text-overflow: ellipsis; overflow: hidden; } </style>');
-"""))
+        load_datatables_js = f"""$('head').append(`<script type="text/javascript">
+{datatables_min_js}
+</script>`);
+$('head').append(`<style>
+{datatables_min_css}
+</style>`);
+"""
+
+    load_datatables_js += \
+        "$('head').append('<style> table td { text-overflow: ellipsis; overflow: hidden; } </style>');\n"
+
+    display(Javascript(load_datatables_js))
+    _DATATABLES_LOADED_ = True
 
 
 def _datatables_repr_(df=None, tableId=None, **kwargs):
     """Return the HTML/javascript representation of the table"""
 
+    if not _DATATABLES_LOADED_:
+        load_datatables()
+
     # Default options
     for option in dir(opt):
-        if not option in kwargs and not option.startswith("__"):
+        if option not in kwargs and not option.startswith("__"):
             kwargs[option] = getattr(opt, option)
 
     # These options are used here, not in DataTable
