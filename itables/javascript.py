@@ -18,6 +18,8 @@ try:
 except NameError:
     unicode = str  # Python 3
 
+_DATATABLES_LOADED_ = False
+
 
 def read_package_file(*path):
     current_path = os.path.dirname(__file__)
@@ -25,24 +27,35 @@ def read_package_file(*path):
         return fp.read()
 
 
-def load_datatables():
+def load_datatables(connected=True):
     """Load the datatables.net library, and the corresponding css"""
+    global _DATATABLES_LOADED_
+    if _DATATABLES_LOADED_:
+        logger.error('DataTables was already loaded')
+        return
+
+    if connected:
+        load_datatables_js = read_package_file('javascript', 'load_datatables_connected.js')
+    else:
+        datatables_min_js = read_package_file('datatables', 'jquery.dataTables.min.js')
+        datatables_min_css = read_package_file('datatables', 'jquery.dataTables.min.css')
+
+        load_datatables_js = """var script = document.createElement("script");
+script.type="text/javascript"
+script.charset="utf-8"
+script.innerHTML = `""" + datatables_min_js + """`;
+$("head").append(script);
+$('head').append(`<style>""" + datatables_min_css + """</style>`);
+"""
+
+    load_datatables_js += \
+        "$('head').append('<style> table td { text-overflow: ellipsis; overflow: hidden; } </style>');\n"
 
     eval_functions_js = read_package_file('javascript', 'eval_functions.js')
-    display(Javascript("""require.config({
-    paths: {
-        datatables: 'https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min',
-    }
-});
+    load_datatables_js += "\n$('head').append(`<script>\n" + eval_functions_js + "\n</` + 'script>');"
 
-$('head').append('<link rel="stylesheet" type="text/css" \
-                href = "https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" > ');
-                
-$('head').append('<style> table td { text-overflow: ellipsis; overflow: hidden; } </style>');
-
-$('head').append(`<script>
-""" + eval_functions_js + """
-</` + 'script>');"""))
+    display(Javascript(load_datatables_js))
+    _DATATABLES_LOADED_ = True
 
 
 def _formatted_values(df):
@@ -69,10 +82,12 @@ def _formatted_values(df):
 
 def _datatables_repr_(df=None, tableId=None, **kwargs):
     """Return the HTML/javascript representation of the table"""
+    if not _DATATABLES_LOADED_:
+        load_datatables()
 
     # Default options
     for option in dir(opt):
-        if not option in kwargs and not option.startswith("__"):
+        if option not in kwargs and not option.startswith("__"):
             kwargs[option] = getattr(opt, option)
 
     # These options are used here, not in DataTable
@@ -119,7 +134,7 @@ def _datatables_repr_(df=None, tableId=None, **kwargs):
         return """<div>""" + html_table + """
 <script type="text/javascript">
 require(["datatables"], function (datatables) {
-    $(document).ready(function () {        
+    $(document).ready(function () {
         var dt_args = """ + dt_args + """;
         dt_args = eval_functions(dt_args);
         table = $('#""" + tableId + """').DataTable(dt_args);

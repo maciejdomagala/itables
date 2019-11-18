@@ -22,6 +22,7 @@ setup(
     long_description_content_type='text/markdown',
     url='https://github.com/mwouts/itables',
     packages=find_packages(exclude=['tests']),
+    package_data={'itables': ['datatables/*.*', 'javascript/*.*']},
     tests_require=['pytest'],
     install_requires=['pandas'],
     license='MIT',
