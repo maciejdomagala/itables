@@ -5,13 +5,16 @@ import io
 import re
 import uuid
 import json
-import warnings
+import logging
 import numpy as np
 import pandas as pd
 import pandas.io.formats.format as fmt
 from IPython.core.display import display, Javascript, HTML
 import itables.options as opt
 from .downsample import downsample
+
+logging.basicConfig()
+logger = logging.getLogger(__name__)
 
 try:
     unicode  # Python 2
@@ -37,6 +40,7 @@ def load_datatables(connected=True):
     if connected:
         load_datatables_js = read_package_file('javascript', 'load_datatables_connected.js')
     else:
+        logger.error('WIP - Offline mode does work yet, sorry')
         datatables_min_js = read_package_file('datatables', 'jquery.dataTables.min.js')
         datatables_min_css = read_package_file('datatables', 'jquery.dataTables.min.css')
 
@@ -144,7 +148,7 @@ require(["datatables"], function (datatables) {
 </div>
 """
     except TypeError as error:
-        warnings.warn(str(error))
+        logger.error(str(error))
         return ''
 
 
