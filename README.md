@@ -165,7 +165,7 @@ Not currently implemented. May be made available at a later stage thanks to the 
 
 ## Large table support
 
-When the data in a table is larger than `maxBytes`, which is equal to 64KB by default, then `itables` removes half the rows and columns, until the remaining table fits into `maxBytes`. If you wish, you can deactivate the limit with `maxBytes=0`, change the value of `maxBytes`, or similarly set a limit on the number of rows (`maxRows`) or columns (`maxColumns`).
+When the data in a table is larger than `maxBytes`, which is equal to 64KB by default, then `itables` will display only a subset of the table - one that fits into `maxBytes`. If you wish, you can deactivate the limit with `maxBytes=0`, change the value of `maxBytes`, or similarly set a limit on the number of rows (`maxRows`) or columns (`maxColumns`).
 
 Note that datatables support [server-side processing](https://datatables.net/examples/data_sources/server_side). At a later stage we may implement support for larger tables using this feature.
 
