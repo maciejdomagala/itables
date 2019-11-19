@@ -6,6 +6,18 @@ import jupytext
 from jupytext.cli import jupytext as jupytext_cli, system
 
 
+def tool_version(tool):
+    try:
+        args = tool.split(' ')
+        args.append('--version')
+        return system(*args)
+    except (OSError, SystemExit):  # pragma: no cover
+        return None
+
+
+requires_nbconvert = pytest.mark.skipif(not tool_version('jupyter nbconvert'), reason='nbconvert not found')
+
+
 def list_notebooks():
     """List the md notebooks in this package"""
     nb_path = os.path.dirname(os.path.abspath(__file__))
@@ -25,6 +37,7 @@ def test_run_notebooks(md_file):
             exec(cell.source, context)
 
 
+@requires_nbconvert
 def test_execute_readme_and_update_index_html():
     nb_path = os.path.dirname(os.path.abspath(__file__))
     readme = os.path.join(nb_path, '..', 'README.md')
