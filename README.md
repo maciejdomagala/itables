@@ -132,7 +132,7 @@ show(
 FIXME: This does not appear to be working...
 
 ```python
-show(df, columnsDefs=[{"width": "200px", "target": 3}])
+show(df, columnDefs=[{"width": "200px", "target": 3}])
 ```
 
 But in some cases - a table with many column like the one below, we can use the `width` parameter...
@@ -176,13 +176,13 @@ Not currently implemented. May be made available at a later stage thanks to the 
 Note that datatables support [server-side processing](https://datatables.net/examples/data_sources/server_side). At a later stage we may implement support for larger tables using this feature.
 
 ```python
-df = wb.get_indicators()
-df.values.nbytes
+large_df = wb.get_indicators()
+large_df.values.nbytes
 ```
 
 ```python
 opt.maxBytes = 1000000
-df
+large_df
 ```
 
 # References
@@ -211,7 +211,7 @@ Also, if you happen to prefer another Javascript table library (say, [ag-grid](h
 
 # Appendix
 
-Below we initialize the github star button <a class="github-button" href="https://github.com/mwouts/itables" data-icon="octicon-star" data-show-count="true" aria-label="Star mwouts/itables on GitHub">Star</a> that appears on top of this notebook:
+Below we initialize the github star button <a class="github-button" href="https://github.com/mwouts/itables" data-icon="octicon-star" data-show-count="true" aria-label="Star mwouts/itables on GitHub">Star</a> that appears at the top of this notebook:
 
 ```python
 %%HTML

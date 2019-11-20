@@ -22,7 +22,7 @@ from itables.sample import sample_series, sample_dfs
 
 ```python
 for df in sample_dfs():
-    show(df)
+    show(df, domLayout='autoHeight')
 ```
 
 # Series

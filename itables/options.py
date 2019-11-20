@@ -6,3 +6,7 @@ showIndex = 'auto'
 
 """Maximum bytes for displaying a table"""
 maxBytes = 2 ** 20
+
+classes = 'ag-theme-balham'
+
+height = '400px'

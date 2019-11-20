@@ -75,6 +75,8 @@ def _aggrid_repr_(df=None, tableId=None, **kwargs):
     # These options are used here, not in ag-grid
     showIndex = kwargs.pop('showIndex')
     maxBytes = kwargs.pop('maxBytes')
+    classes = kwargs.pop('classes')
+    height = kwargs.pop('height')
 
     if isinstance(df, (np.ndarray, np.generic)):
         df = pd.DataFrame(df)
@@ -87,7 +89,7 @@ def _aggrid_repr_(df=None, tableId=None, **kwargs):
                          'Please print a smaller dataframe, or enlarge or remove the limit:\n'
                          'import itables.options as opt; opt.maxBytes=0')
 
-    tableId = tableId or str(uuid.uuid4())
+    tableId = tableId or 'id-' + str(uuid.uuid4())
     if showIndex == 'auto':
         showIndex = df.index.name is not None or not isinstance(df.index, pd.RangeIndex)
 
@@ -95,7 +97,12 @@ def _aggrid_repr_(df=None, tableId=None, **kwargs):
         df = df.set_index(pd.RangeIndex(len(df.index)))
 
     # Generate table div
-    table_div = '<div id="{}" style="height: 200px;" class="ag-theme-balham"></div>'.format(tableId)
+    if isinstance(classes, list):
+        classes = ' '.join(classes)
+    div_args = {'id': tableId, 'class': classes}
+    if kwargs.get('domLayout') != 'autoHeight':
+        div_args['style'] = "height: {}".format(height)
+    table_div = '<div {}></div>'.format(' '.join(['{}="{}"'.format(key, div_args[key]) for key in div_args]))
 
     # Table columns
     kwargs['columnDefs'] = columns_as_ag_header(df, showIndex)
@@ -127,7 +134,7 @@ def _aggrid_repr_(df=None, tableId=None, **kwargs):
 
     kwargs['rowData'] = [dict(zip(fields, row)) for row in formatted_df.values.tolist()]
 
-    return table_div + """
+    return """<div>""" + table_div + """
 <script type="text/javascript">
 require(["ag"], function (agGrid) {
     $(document).ready(function () {
@@ -137,6 +144,7 @@ require(["ag"], function (agGrid) {
     });
 })
 </script>
+</div>
 """
 
 
