@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>small_plotly_graph</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+</head>
+<body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+    <div class="jp-Cell-inputWrapper">
+        <div class="jp-InputArea jp-Cell-inputArea">
+            <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
+            <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+                <div class="CodeMirror cm-s-jupyter">
+                    <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span
+                            class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
+<span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+
+<span class="c1"># We use the connected renderer to make the notebook lighter</span>
+<span class="n">pio</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span
+                                class="n">default</span> <span class="o">=</span> <span class="s1">&#39;notebook_connected&#39;</span>
+
+<span class="c1"># We pass an empty template to make the JS plot shorter</span>
+<span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span
+                                class="o">=</span><span class="p">[</span><span class="n">go</span><span
+                                class="o">.</span><span class="n">Bar</span><span class="p">(</span><span
+                                class="n">y</span><span class="o">=</span><span class="p">[</span><span
+                                class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span
+                                class="p">,</span> <span class="mi">3</span><span class="p">])],</span> <span class="n">layout</span><span
+                                class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">template</span><span
+                                class="o">=</span><span class="nb">dict</span><span class="p">()))</span>
+</pre>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="jp-Cell-outputWrapper">
+
+
+        <div class="jp-OutputArea jp-Cell-outputArea">
+
+            <div class="jp-OutputArea-child">
+
+
+                <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+                <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+                    <script type="text/javascript">
+                        window.PlotlyConfig = {MathJaxConfig: 'local'};
+                        if (window.MathJax) {
+                            MathJax.Hub.Config({SVG: {font: "STIX-Web"}});
+                        }
+                        if (typeof require !== 'undefined') {
+                            require.undef("plotly");
+                            requirejs.config({
+                                paths: {
+                                    'plotly': ['https://cdn.plot.ly/plotly-latest.min']
+                                }
+                            });
+                            require(['plotly'], function (Plotly) {
+                                window._Plotly = Plotly;
+                            });
+                        }
+                    </script>
+
+                </div>
+
+            </div>
+
+            <div class="jp-OutputArea-child">
+
+
+                <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+                <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+                    <div>
+                        <div id="0e19b254-01ed-4c46-b5cf-1cf6dd9a5959" class="plotly-graph-div"
+                             style="height:525px; width:100%;"></div>
+                        <script type="text/javascript">                require(["plotly"], function (Plotly) {
+                            window.PLOTLYENV = window.PLOTLYENV || {};
+                            if (document.getElementById("0e19b254-01ed-4c46-b5cf-1cf6dd9a5959")) {
+                                Plotly.newPlot("0e19b254-01ed-4c46-b5cf-1cf6dd9a5959", [{
+                                    "type": "bar",
+                                    "y": [2, 1, 3]
+                                }], {"template": {"data": {"scatter": [{"type": "scatter"}]}}}, {"responsive": true}).then(function () {
+
+                                    var gd = document.getElementById('0e19b254-01ed-4c46-b5cf-1cf6dd9a5959');
+                                    var x = new MutationObserver(function (mutations, observer)
+                                    {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+                                }
+                            }
+                        );
+
+                        // Listen for the removal of the full notebook cells
+                        var notebookContainer = gd.closest('#notebook-container');
+                        if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+                            var outputEl = gd.closest('.output');
+                        if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                            }
+                        )
+                        }
+                        ;
+                        })
+                        ;            </script>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+
+
+</html>
